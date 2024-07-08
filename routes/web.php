@@ -15,11 +15,11 @@ use Inertia\Inertia;
 // });
 
 Route::get('/', function() {
-    return Inertia::render('Admin/Index');
+    return Inertia::render('Auth/Login');
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Admin/Index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

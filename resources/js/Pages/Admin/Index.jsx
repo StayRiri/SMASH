@@ -1,11 +1,12 @@
-import React from "react"
-import { Link, Head } from '@inertiajs/react';
+import React from "react";
+import { Link, Head, useForm } from "@inertiajs/react";
+
 
 export default function Index() {
-    return(
+    return (
         <>
-            <Head title="Index" />
-            <h1>HALO TEST DL</h1>
+            <Head title="Dashboard" />
+            <h1>HALO LAGI</h1>
         </>
     );
 }
