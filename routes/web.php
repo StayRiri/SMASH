@@ -22,6 +22,22 @@ Route::get('/dashboard', function () {
     return Inertia::render('Admin/Index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/produk', function () {
+    return Inertia::render('Admin/Produk');
+})->middleware(['auth', 'verified'])->name('produk');
+
+Route::get('/kategori', function () {
+    return Inertia::render('Admin/Kategori');
+})->middleware(['auth', 'verified'])->name('kategori');
+
+Route::get('/transaksi', function () {
+    return Inertia::render('Admin/Transaksi');
+})->middleware(['auth', 'verified'])->name('transaksi');
+
+Route::get('/riwayat', function () {
+    return Inertia::render('Admin/Riwayat');
+})->middleware(['auth', 'verified'])->name('riwayat');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
