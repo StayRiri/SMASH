@@ -9,10 +9,11 @@ export default function Layout({ user, children }) {
     };
 
     return (
-        <div className="flex h-screen">
+        <div className="flex">
+            <div className="h-screen"></div>
             {/* Navbar samping */}
             <nav
-                className={`bg-orange-400 w-50 h-screen p-4 text-white ${
+                className={`bg-orange-400 w-50 p-4 text-white ${
                     isOpen ? "block" : "hidden"
                 }`}
             >
