@@ -56,7 +56,7 @@ export default function Layout({ user, children }) {
                 {/* Header */}
 
                 <header className="bg-orange-600 text-white p-4">
-                    <div className="max-w-7xl mx-auto flex items-center justify-between">
+                    <div className="max-w-10xl mx-auto flex items-center justify-between">
                         <button
                             className="btn btn-square btn-ghost"
                             onClick={toggleNavbar}
@@ -85,7 +85,7 @@ export default function Layout({ user, children }) {
 
                 {/* Footer */}
                 <footer className="bg-orange-600 text-white p-6">
-                    <div className="max-w-7xl mx-auto">
+                    <div className="max-w-10xl mx-auto">
                         <p>&copy; 2024 Selva House</p>
                     </div>
                 </footer>
