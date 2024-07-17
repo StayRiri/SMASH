@@ -14,6 +14,11 @@ export default function Produk({ auth }) {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
+    const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+
+    const openModalEdit = () => setIsModalEditOpen(true);
+    const closeModalEdit = () => setIsModalEditOpen(false);
+
 
 
     return (
@@ -166,10 +171,92 @@ export default function Produk({ auth }) {
                                                 <td>Rp. 319.000</td>
                                                 <td align="center">5</td>
                                                 <td>Pakaian Dewasa Wanita</td>
-                                                <td align="center">
-                                                    <button className="btn btn-square btn-ghost">
+                                                <td>
+                                                    <button className="btn btn-square btn-ghost" onClick={openModalEdit}>
                                                         <PencilIcon className="h-6 w-6 text-gray-500" />
                                                     </button>
+                                                    {/* Modal untuk Form */}
+                                                    {isModalEditOpen && (
+                                                        <div className="modal modal-open">
+                                                            <div className="modal-box relative">
+                                                                <button
+                                                                    className="btn btn-sm btn-circle absolute right-2 top-2"
+                                                                    onClick={closeModalEdit}
+                                                                >
+                                                                    ✕
+                                                                </button>
+                                                                <form>
+                                                                    <h2 className="text-2xl font-bold">Edit Produk Selva House</h2>
+                                                                    <div className="mb-4">
+                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstName">
+                                                                            Gambar
+                                                                        </label>
+                                                                        <input type="file" className="file-input file-input-outline input-bordered w-full max-w-xs" />
+                                                                    </div>
+                                                                    <div className="mb-4">
+                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
+                                                                            Nama Produk
+                                                                        </label>
+                                                                        <input
+                                                                            type="text" id="Nama Produk" className="input input-bordered w-full" value={"Gamis Granada Sarimbit Series"}
+                                                                        />
+                                                                    </div>
+                                                                    <div className="mb-4">
+                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
+                                                                            Jenis Produk
+                                                                        </label>
+                                                                        <input
+                                                                            type="text" id="Jenis Produk" className="input input-bordered w-full" value={"Yasmeera X El-Rasheed"}
+                                                                        />
+                                                                    </div>
+                                                                    <div className="mb-4">
+                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
+                                                                            Warna Produk
+                                                                        </label>
+                                                                        <input
+                                                                            type="text" id="Warna Produk" className="input input-bordered w-full" value={"Dark Green"}
+                                                                        />
+                                                                    </div>
+                                                                    <div className="mb-4">
+                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
+                                                                            Harga Produk
+                                                                        </label>
+                                                                        <input
+                                                                            type="text" id="Nama Produk" className="input input-bordered w-full" value={"Rp. 319.000"}
+                                                                        />
+                                                                    </div>
+                                                                    <div className="mb-4">
+                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
+                                                                            Jumlah Produk
+                                                                        </label>
+                                                                        <input
+                                                                            type="number" id="Nama Produk" className="input input-bordered w-full" value={"5"}
+                                                                        />
+                                                                    </div>
+                                                                    <div className="mb-4">
+                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName" value={"Pakaian Dewasa Wanita"}>
+                                                                            Kategori Produk
+                                                                        </label>
+                                                                        <select className="select select-bordered w-full max-w-xs">
+                                                                            <option disabled selected>Pilih</option>
+                                                                            <option>Pakaian Dewasa Wanita</option>
+                                                                            <option>Pakaian Dewasa Laki</option>
+                                                                            <option>Pakaian Anak Laki</option>
+                                                                            <option>Mukena Dewasa</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div className="flex justify-end">
+                                                                        <button type="button" className="btn btn-outline mr-2" onClick={closeModalEdit}>
+                                                                            Cancel
+                                                                        </button>
+                                                                        <button type="submit" className="btn btn-success text-white">
+                                                                            Save
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                     <button className="btn btn-square btn-ghost">
                                                         <TrashIcon className="h-6 w-6 text-red-500" />
                                                     </button>
@@ -192,7 +279,7 @@ export default function Produk({ auth }) {
                                                 <td>Rp. 209.000</td>
                                                 <td align="center">9</td>
                                                 <td>Pakaian Anak Laki</td>
-                                                <td align="center">
+                                                <td>
                                                     <button className="btn btn-square btn-ghost">
                                                         <PencilIcon className="h-6 w-6 text-gray-500" />
                                                     </button>
