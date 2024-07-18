@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "@inertiajs/react";
+import NavLink from "@/Components/NavLink";
 
 export default function Layout({ user, children }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -25,31 +26,37 @@ export default function Layout({ user, children }) {
                     />
                 </div>
                 <ul>
-                    <li className="my-4">
-                        <Link href={route('dashboard')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
+                    <NavLink
+                        className="my-4"
+                        href={route("dashboard")}
+                        active={route().current("dashboard")}
+                    >
                         Dashboard
-                    </Link>
-                    </li>
-                    <li className="my-4">
-                        <Link href={route('Produk.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
+                    </NavLink>
+                    <br />
+                    <NavLink
+                        className="my-4"
+                        href={route("Produk.index")}
+                        active={route().current("Produk.index")}
+                    >
                         Produk
-                    </Link>
-                    </li>
-                    <li className="my-4">
-                        <Link href={route('Transaksi.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
-                        Transaksi
-                    </Link>
-                    </li>
-                    <li className="my-4">
-                        <Link href={route('Riwayat.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
-                        Riwayat Transaksi
-                    </Link>
-                    </li>
-                    <li className="my-4">
-                    <Link href={route('Kategori.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
+                    </NavLink>
+                    <br />
+                    <NavLink
+                        className="my-4"
+                        href={route("Kategori.index")}
+                        active={route().current("Kategori.index")}
+                    >
                         Kategori
-                    </Link>
-                    </li>
+                    </NavLink>
+                    <br />
+                    <NavLink
+                        className="my-4"
+                        href={route("Transaksi.index")}
+                        active={route().current("Transaksi.index")}
+                    >
+                        Transaksi
+                    </NavLink>
                 </ul>
             </nav>
 

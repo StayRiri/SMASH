@@ -220,7 +220,6 @@ export default function Produk({ auth, produks, kategoris }) {
                                                         <button
                                                             type="submit"
                                                             className="btn btn-success text-white"
-                                                            onClick={closeModal}
                                                         >
                                                             Save
                                                         </button>
@@ -246,9 +245,9 @@ export default function Produk({ auth, produks, kategoris }) {
                                         </thead>
                                         <tbody>
                                             {produks.data.map((produk) => (
-                                                <tr align="center">
+                                                <tr>
                                                     <td>{produk.id_produk}</td>
-                                                    <td className="flex items-center justify-center space-x-3">
+                                                    <td className="flex items-center space-x-3">
                                                         <div
                                                             className="avatar"
                                                             onClick={
@@ -276,9 +275,8 @@ export default function Produk({ auth, produks, kategoris }) {
                                                                         ✕
                                                                     </button>
                                                                     <img
-                                                                        src={
-                                                                            produk.gambar_produk
-                                                                        }
+                                                                        src="/granada sh.png"
+                                                                        alt="granada"
                                                                         className="rounded-box w-full"
                                                                     />
                                                                 </div>
