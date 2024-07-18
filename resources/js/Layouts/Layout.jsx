@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "@inertiajs/react";
+import NavLink from "@/Components/NavLink";
 
 export default function Layout({ user, children }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,9 +14,8 @@ export default function Layout({ user, children }) {
             <div className="h-screen"></div>
             {/* Navbar samping */}
             <nav
-                className={`bg-orange-400 w-50 p-4 text-white ${
-                    isOpen ? "block" : "hidden"
-                }`}
+                className={`bg-orange-400 w-50 p-4 text-white ${isOpen ? "block" : "hidden"
+                    }`}
             >
                 <div className="flex items-center justify-center h-16 bg-orange-400 text-white">
                     <img
@@ -25,30 +25,29 @@ export default function Layout({ user, children }) {
                     />
                 </div>
                 <ul>
-                    <li className="my-4">
+                    <NavLink className="my-4"
+                        href={route('dashboard')}
+                        active={route().current('dashboard')}>
                         Dashboard
-                        {/* <Link href={route('Admin.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
-                        Dashboard
-                    </Link> */}
-                    </li>
-                    <li className="my-4">
+                    </NavLink>
+                    <br />
+                    <NavLink className="my-4"
+                        href={route('produk')}
+                        active={route().current('produk')}>
                         Produk
-                        {/* <Link href={route('Produk.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
-                        Produk
-                    </Link> */}
-                    </li>
-                    <li className="my-4">
+                    </NavLink>
+                    <br />
+                    <NavLink className="my-4"
+                        href={route('kategori')}
+                        active={route().current('kategori')}>
                         Kategori
-                        {/* <Link href={route('Kategori.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
-                        Kategori
-                    </Link> */}
-                    </li>
-                    <li className="my-4">
+                    </NavLink>
+                    <br />
+                    <NavLink className="my-4"
+                        href={route('transaksi')}
+                        active={route().current('transaksi')}>
                         Transaksi
-                        {/* <Link href={route('Transaksi.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
-                        Transaksi
-                    </Link> */}
-                    </li>
+                    </NavLink>
                 </ul>
             </nav>
 
