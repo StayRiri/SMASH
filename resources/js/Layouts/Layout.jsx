@@ -26,28 +26,29 @@ export default function Layout({ user, children }) {
                 </div>
                 <ul>
                     <li className="my-4">
+                        <Link href={route('dashboard')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
                         Dashboard
-                        {/* <Link href={route('Admin.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
-                        Dashboard
-                    </Link> */}
+                    </Link>
                     </li>
                     <li className="my-4">
+                        <Link href={route('Produk.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
                         Produk
-                        {/* <Link href={route('Produk.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
-                        Produk
-                    </Link> */}
+                    </Link>
                     </li>
                     <li className="my-4">
-                        Kategori
-                        {/* <Link href={route('Kategori.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
-                        Kategori
-                    </Link> */}
+                        <Link href={route('Transaksi.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
+                        Transaksi
+                    </Link>
                     </li>
                     <li className="my-4">
-                        Transaksi
-                        {/* <Link href={route('Transaksi.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
-                        Transaksi
-                    </Link> */}
+                        <Link href={route('Riwayat.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
+                        Riwayat Transaksi
+                    </Link>
+                    </li>
+                    <li className="my-4">
+                    <Link href={route('Kategori.index')} className="text-white block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-500">
+                        Kategori
+                    </Link>
                     </li>
                 </ul>
             </nav>

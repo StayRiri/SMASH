@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProdukRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreProdukRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,14 @@ class StoreProdukRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama_produk' => ['required', 'max:255'],
+            'harga_produk' => ['required', 'Integer'],
+            'warna_produk' => ['required', 'string'],
+            'jumlah_produk' => ['required', 'Integer'],
+            'gambar_produk' => ['required', 'image'],
+            'id_kategori' => ['required', Rule::in([
+                '1', '2', '3', '4'
+            ])]
         ];
     }
 }

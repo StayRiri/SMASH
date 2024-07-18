@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Http\Requests\StoreKategoriRequest;
 use App\Http\Requests\UpdateKategoriRequest;
+use Inertia\Inertia;
 
 class KategoriController extends Controller
 {
@@ -13,7 +14,7 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Admin/Kategori');
     }
 
     /**

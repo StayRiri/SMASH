@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Produk;
 use App\Http\Requests\StoreProdukRequest;
 use App\Http\Requests\UpdateProdukRequest;
+use App\Http\Resources\KategoriResource;
+use App\Http\Resources\ProdukResource;
+use App\Models\Kategori;
+use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class ProdukController extends Controller
 {
@@ -13,7 +18,14 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        //
+        $query = Produk::query();
+        $query2 = Kategori::query();
+        $kategoris = $query2->paginate(10);
+        $produks = $query->paginate(10);
+        return Inertia::render('Admin/Produk', [
+            "produks" => ProdukResource::collection($produks),
+            "kategoris" => KategoriResource::collection($kategoris),
+        ]);
     }
 
     /**
@@ -29,7 +41,15 @@ class ProdukController extends Controller
      */
     public function store(StoreProdukRequest $request)
     {
-        //
+        $data = $request->validated();
+        $image = $data['gambar_produk'] ?? null;
+        if ($image) {
+            $data['gambar_produk'] = $image->store('Produk/' . Str::random(), 'public');
+        }
+        Produk::create($data);
+
+        return to_route('Produk.index')
+            ->with('success', 'Project was created');
     }
 
     /**

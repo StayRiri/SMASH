@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransaksiController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,13 +21,22 @@ Route::get('/', function() {
     return Inertia::render('Auth/Login');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Admin/Index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware( ['auth', 'verified'] )->group(function () {
+    Route::get('dashboard', fn() => Inertia::render('Admin/Index'))->name('dashboard');
 
-Route::get('/produk', function () {
-    return Inertia::render('Admin/Produk');
-})->middleware(['auth', 'verified'])->name('produk');
+    Route::resource('Produk', ProdukController::class);
+    Route::resource('Kategori', KategoriController::class);
+    Route::resource('Transaksi', TransaksiController::class);
+    Route::resource('Riwayat', TransaksiController::class);
+});
+
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Admin/Index');   
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::get('/produk', function () {
+//     return Inertia::render('Admin/Produk');
+// })->middleware(['auth', 'verified'])->name('produk');
 
 Route::get('/kategori', function () {
     return Inertia::render('Admin/Kategori');
