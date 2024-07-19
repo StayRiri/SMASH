@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use App\Http\Resources\ProdukResource;
+use App\Models\Produk;
+use Inertia\Inertia;
 
 class AdminController extends Controller
 {
@@ -13,7 +16,11 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $query = Produk::query();
+        $produks = $query->paginate(10);
+        return Inertia::render('Admin/Index', [
+            "produks" => ProdukResource::collection($produks),
+        ]);
     }
 
     /**

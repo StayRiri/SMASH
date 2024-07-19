@@ -73,6 +73,18 @@ export default function Produk({
         post(route("Produk.store"), {
             onSuccess: () => {
                 setIsModalOpen(false);
+                setData([
+                    "nama_produk",
+                    "",
+                    "harga_produk",
+                    "",
+                    "warna_produk",
+                    "",
+                    "jumlah_produk",
+                    "",
+                    "gambar_produk",
+                    "",
+                ]);
             },
             onError: () => {
                 setIsModalOpen(true);
