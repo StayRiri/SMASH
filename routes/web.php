@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
@@ -22,6 +23,14 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
+
+// Route::get('/customer', function () {
+//     Route::get('/dashboard', [CustomerController::class, 'index'])->name('dashboard');
+// });
+
+Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('dashboardcustomer');
+
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
@@ -47,7 +56,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // CRUD TRANSAKSI
-Route::middleware('auth')->group(function () {  
+Route::middleware('auth')->group(function () {
     Route::get('/transaksi/{transaksi}/edit', [TransaksiController::class, 'edit'])->name('Transaksi.edit');
     Route::put('transaksi/{transaksi}', [TransaksiController::class, 'update'])->name('Transaksi.update');
     Route::delete('/transaksi/{transaksi}', [TransaksiController::class, 'destroy'])->name('Transaksi.destroy');
