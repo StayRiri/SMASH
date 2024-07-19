@@ -11,7 +11,7 @@ class UpdateProdukRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class UpdateProdukRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama_produk' => ['required', 'max:255'],
+            'harga_produk' => ['required', 'Integer'],
+            'warna_produk' => ['required', 'string'],
+            'jumlah_produk' => ['required', 'Integer'],
+            'gambar_produk' => ['nullable', 'image'],
+            'id_kategori' => ['required', 'Integer']
         ];
     }
 }

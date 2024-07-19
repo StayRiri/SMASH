@@ -11,6 +11,11 @@ class Produk extends Model
 
     protected $table = 'produk';
 
+    public function getRouteKeyName()
+    {
+        return 'id_produk';
+    }
+
     public $timestamps = false;
 
     protected $fillable = [

@@ -4,6 +4,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransaksiController;
+use App\Models\Produk;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,18 +18,32 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-Route::get('/', function() {
+Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
 
-Route::middleware( ['auth', 'verified'] )->group(function () {
-    Route::get('dashboard', fn() => Inertia::render('Admin/Index'))->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', fn () => Inertia::render('Admin/Index'))->name('dashboard');
 
     Route::resource('Produk', ProdukController::class);
     Route::resource('Kategori', KategoriController::class);
     Route::resource('Transaksi', TransaksiController::class);
     Route::resource('Riwayat', TransaksiController::class);
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('Produk.edit');
+    Route::put('produk/{produk}', [ProdukController::class, 'update'])->name('Produk.update');
+    Route::delete('/produk/{produk}', [ProdukController::class, 'destroy'])->name('Produk.destroy');
+});
+
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
+
+require __DIR__ . '/auth.php';
 
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Admin/Index');   
@@ -38,22 +53,14 @@ Route::middleware( ['auth', 'verified'] )->group(function () {
 //     return Inertia::render('Admin/Produk');
 // })->middleware(['auth', 'verified'])->name('produk');
 
-Route::get('/kategori', function () {
-    return Inertia::render('Admin/Kategori');
-})->middleware(['auth', 'verified'])->name('kategori');
+// Route::get('/kategori', function () {
+//     return Inertia::render('Admin/Kategori');
+// })->middleware(['auth', 'verified'])->name('kategori');
 
-Route::get('/transaksi', function () {
-    return Inertia::render('Admin/Transaksi');
-})->middleware(['auth', 'verified'])->name('transaksi');
+// Route::get('/transaksi', function () {
+//     return Inertia::render('Admin/Transaksi');
+// })->middleware(['auth', 'verified'])->name('transaksi');
 
-Route::get('/riwayat', function () {
-    return Inertia::render('Admin/Riwayat');
-})->middleware(['auth', 'verified'])->name('riwayat');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
+// Route::get('/riwayat', function () {
+//     return Inertia::render('Admin/Riwayat');
+// })->middleware(['auth', 'verified'])->name('riwayat');

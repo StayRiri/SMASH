@@ -8,8 +8,12 @@ use App\Http\Requests\UpdateProdukRequest;
 use App\Http\Resources\KategoriResource;
 use App\Http\Resources\ProdukResource;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
+use function Psy\debug;
 
 class ProdukController extends Controller
 {
@@ -25,6 +29,7 @@ class ProdukController extends Controller
         return Inertia::render('Admin/Produk', [
             "produks" => ProdukResource::collection($produks),
             "kategoris" => KategoriResource::collection($kategoris),
+            "bawaData" => false,
         ]);
     }
 
@@ -43,13 +48,14 @@ class ProdukController extends Controller
     {
         $data = $request->validated();
         $image = $data['gambar_produk'] ?? null;
+        $lastId = Produk::latest('id_produk')->value('id_produk');
+        $lastId += 1;
         if ($image) {
-            $data['gambar_produk'] = $image->store('Produk/' . Str::random(), 'public');
+            $data['gambar_produk'] = $image->storeAs('Produk/' . $lastId, $lastId, 'public');
         }
         Produk::create($data);
 
-        return to_route('Produk.index')
-            ->with('success', 'Project was created');
+        return to_route('Produk.index');
     }
 
     /**
@@ -63,9 +69,19 @@ class ProdukController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Produk $produk)
+    public function edit($produkEdit)
     {
-        //
+        $query = Produk::query();
+        $query2 = Kategori::query();
+        $kategoris = $query2->paginate(10);
+        $produks = $query->paginate(10);
+        $dataEdit = Produk::where('id_produk', $produkEdit)->first();
+        return Inertia::render('Admin/Produk', [
+            "produks" => ProdukResource::collection($produks),
+            "kategoris" => KategoriResource::collection($kategoris),
+            "produkEdit" => new ProdukResource($dataEdit),
+            "bawaData" => true,
+        ]);
     }
 
     /**
@@ -73,7 +89,22 @@ class ProdukController extends Controller
      */
     public function update(UpdateProdukRequest $request, Produk $produk)
     {
-        //
+        $data = $request->validated();
+        $data['id_produk'] = $produk->id_produk;
+        $image = $data['gambar_produk'] ?? null;
+        // dd($data);
+        if ($image) {
+            if ($produk->gambar_produk) {
+                Storage::disk('public')->delete($produk->gambar_produk);
+            }
+            $data['gambar_produk'] = $image->storeAs('Produk/' . $data['id_produk'], $data['id_produk'], 'public');
+        } else {
+            $data['gambar_produk'] = $produk->gambar_produk;
+        }
+        $produk->where('id_produk', $produk->id_produk)->update($data);
+
+        //BALIK
+        return to_route('Produk.index');
     }
 
     /**
@@ -81,6 +112,10 @@ class ProdukController extends Controller
      */
     public function destroy(Produk $produk)
     {
-        //
+        $nama = $produk->nama_produk;
+        Storage::disk('public')->delete($produk->gambar_produk);
+        $produk->where('id_produk', $produk->id_produk)->delete();
+        return to_route('Produk.index')
+            ->with('success', "Produk \"$nama\" berhasil dihapus");
     }
 }

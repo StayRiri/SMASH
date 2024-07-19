@@ -28,9 +28,7 @@ class StoreProdukRequest extends FormRequest
             'warna_produk' => ['required', 'string'],
             'jumlah_produk' => ['required', 'Integer'],
             'gambar_produk' => ['required', 'image'],
-            'id_kategori' => ['required', Rule::in([
-                '1', '2', '3', '4'
-            ])]
+            'id_kategori' => ['required', 'Integer']
         ];
     }
 }
