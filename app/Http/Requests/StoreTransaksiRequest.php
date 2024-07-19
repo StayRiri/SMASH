@@ -11,7 +11,7 @@ class StoreTransaksiRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class StoreTransaksiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id_produk' => ['required', 'Integer'],
+            'jumlah_produk' => ['required', 'Integer'],
+            'total_transaksi' => ['required', 'Integer'],
+            'tanggal_transaksi' => ['required', 'date'],
         ];
     }
 }

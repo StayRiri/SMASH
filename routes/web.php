@@ -32,10 +32,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('Riwayat', TransaksiController::class);
 });
 
+// CRUD PRODUK
 Route::middleware('auth')->group(function () {
     Route::get('/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('Produk.edit');
     Route::put('produk/{produk}', [ProdukController::class, 'update'])->name('Produk.update');
     Route::delete('/produk/{produk}', [ProdukController::class, 'destroy'])->name('Produk.destroy');
+});
+
+// CRUD KATEGORI
+Route::middleware('auth')->group(function () {
+    Route::get('/kategori/{kategori}/edit', [KategoriController::class, 'edit'])->name('Kategori.edit');
+    Route::put('kategori/{kategori}', [KategoriController::class, 'update'])->name('Kategori.update');
+    Route::delete('/kategori/{kategori}', [KategoriController::class, 'destroy'])->name('Kategori.destroy');
+});
+
+// CRUD TRANSAKSI
+Route::middleware('auth')->group(function () {  
+    Route::get('/transaksi/{transaksi}/edit', [TransaksiController::class, 'edit'])->name('Transaksi.edit');
+    Route::put('transaksi/{transaksi}', [TransaksiController::class, 'update'])->name('Transaksi.update');
+    Route::delete('/transaksi/{transaksi}', [TransaksiController::class, 'destroy'])->name('Transaksi.destroy');
 });
 
 // Route::middleware('auth')->group(function () {

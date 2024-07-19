@@ -25,7 +25,6 @@ class Produk extends Model
         'jumlah_produk',
         'gambar_produk',
         'id_kategori',
-        'nama_kategori'
     ];
 
     public function kategoriBy()

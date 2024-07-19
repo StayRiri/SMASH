@@ -92,7 +92,6 @@ class ProdukController extends Controller
         $data = $request->validated();
         $data['id_produk'] = $produk->id_produk;
         $image = $data['gambar_produk'] ?? null;
-        // dd($data);
         if ($image) {
             if ($produk->gambar_produk) {
                 Storage::disk('public')->delete($produk->gambar_produk);
@@ -112,10 +111,9 @@ class ProdukController extends Controller
      */
     public function destroy(Produk $produk)
     {
-        $nama = $produk->nama_produk;
         Storage::disk('public')->delete($produk->gambar_produk);
         $produk->where('id_produk', $produk->id_produk)->delete();
         return to_route('Produk.index')
-            ->with('success', "Produk \"$nama\" berhasil dihapus");
+            ->with('success', "Produk berhasil dihapus");
     }
 }

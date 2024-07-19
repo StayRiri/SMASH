@@ -1,20 +1,108 @@
 import Layout from "@/Layouts/Layout";
-import { Head } from "@inertiajs/react";
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { useState } from "react";
+import { Head, useForm, Link, router } from "@inertiajs/react";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { useState, useEffect } from "react";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
+import SelectInput from "@/Components/SelectInput";
+import InputError from "@/Components/InputError";
 
-export default function Transaksi({ auth }) {
+export default function Transaksi({
+    auth,
+    transaksis,
+    produks,
+    transaksiEdit,
+    bawaData,
+}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
-
     const openModalEdit = () => setIsModalEditOpen(true);
     const closeModalEdit = () => setIsModalEditOpen(false);
 
+    useEffect(() => {
+        if (bawaData) {
+            setIsModalEditOpen(true);
+        } else {
+            setIsModalEditOpen(false);
+        }
+    }, [transaksiEdit]);
 
+    const deleteData = (transaksiHapus) => {
+        if (!window.confirm("Hapus transaksi ini?")) {
+            return;
+        }
+        router.delete(
+            route("Transaksi.destroy", {
+                transaksi: transaksiHapus.id_transaksi,
+            })
+        );
+    };
+
+    const editData = (dataEdit) => {
+        router.get(
+            route("Transaksi.edit", { transaksi: dataEdit.id_transaksi })
+        );
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        post(route("Transaksi.store"), {
+            onSuccess: () => {
+                setIsModalOpen(false);
+                setData([
+                    "id_produk",
+                    "",
+                    "jumlah_produk",
+                    "",
+                    "total_transaksi",
+                    "",
+                    "tanggal_transaksi",
+                    "",
+                ]);
+            },
+            onError: () => {
+                setIsModalOpen(true);
+            },
+        });
+    };
+
+    const submitUpdate = (e) => {
+        e.preventDefault();
+        post(route("Transaksi.update", transaksiEdit.data.id_transaksi), {
+            onSuccess: () => {
+                setIsModalEditOpen(false);
+                setData([
+                    "id_produk",
+                    "",
+                    "jumlah_produk",
+                    "",
+                    "total_transaksi",
+                    "",
+                    "tanggal_transaksi",
+                    "",
+                ]);
+            },
+            onError: () => {
+                setIsModalEditOpen(true);
+            },
+        });
+    };
+
+    const { data, setData, post, errors } = useForm({
+        id_transaksi: transaksiEdit ? transaksiEdit.data.id_transaksi : "",
+        id_produk: transaksiEdit ? transaksiEdit.data.namaBy.id_produk : "",
+        jumlah_produk: transaksiEdit ? transaksiEdit.data.jumlah_produk : "",
+        total_transaksi: transaksiEdit
+            ? transaksiEdit.data.total_transaksi
+            : "",
+        tanggal_transaksi: transaksiEdit
+            ? transaksiEdit.data.tanggal_transaksi
+            : "",
+        _method: transaksiEdit ? "PUT" : "POST",
+    });
 
     return (
         <Layout user={auth.user}>
@@ -24,11 +112,15 @@ export default function Transaksi({ auth }) {
                 <div className="container mx-auto p-4">
                     <div className="card bg-base-100 shadow-xl">
                         <div className="card-body">
-
                             <div className="container mx-auto p-4">
                                 <div className="flex justify-between items-center mb-4">
-                                    <h2 className="text-2xl font-bold">Daftar Transaksi Selva House</h2>
-                                    <button class="btn btn-success text-white" onClick={openModal}>
+                                    <h2 className="text-2xl font-bold">
+                                        Daftar Transaksi Selva House
+                                    </h2>
+                                    <button
+                                        class="btn btn-success text-white"
+                                        onClick={openModal}
+                                    >
                                         Tambah Transaksi
                                     </button>
                                     {/* Modal untuk Form */}
@@ -41,45 +133,149 @@ export default function Transaksi({ auth }) {
                                                 >
                                                     ✕
                                                 </button>
-                                                <form>
-                                                    <h2 className="text-2xl font-bold">Tambah Transaksi Selva House</h2>
+                                                <form onSubmit={onSubmit}>
+                                                    <h2 className="text-2xl font-bold">
+                                                        Tambah Transaksi Selva
+                                                        House
+                                                    </h2>
                                                     <div className="mb-4">
-                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
-                                                            ID Produk
-                                                        </label>
-                                                        <input
-                                                            type="text" id="Nama Produk" className="input input-bordered w-full" placeholder="ID Produk..."
+                                                        <InputLabel
+                                                            htmlFor="id_produk"
+                                                            value="Id Produk"
+                                                        />
+                                                        <SelectInput
+                                                            id="id_produk"
+                                                            name="id produk"
+                                                            className="select select-bordered w-full max-w-xs"
+                                                            onChange={(e) =>
+                                                                setData(
+                                                                    "id_produk",
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                        >
+                                                            <option value=""></option>
+                                                            {produks.data.map(
+                                                                (produk) => (
+                                                                    <option
+                                                                        value={
+                                                                            produk.id_produk
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            produk.nama_produk
+                                                                        }
+                                                                    </option>
+                                                                )
+                                                            )}
+                                                        </SelectInput>
+                                                        <InputError
+                                                            message={
+                                                                errors.nama_produk
+                                                            }
+                                                            className="mt-2"
                                                         />
                                                     </div>
                                                     <div className="mb-4">
-                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
-                                                            ID Kategori
-                                                        </label>
-                                                        <input
-                                                            type="text" id="Jenis Produk" className="input input-bordered w-full" placeholder="ID Kategori..."
+                                                        <InputLabel
+                                                            htmlFor="jumlah_produk"
+                                                            value="Jumlah Produk"
+                                                        />
+                                                        <TextInput
+                                                            id="jumlah_produk"
+                                                            type="text"
+                                                            name="jumlah produk"
+                                                            value={
+                                                                data.jumlah_produk
+                                                            }
+                                                            className="file-input file-input-outline input-bordered w-full max-w-xs"
+                                                            onChange={(e) =>
+                                                                setData(
+                                                                    "jumlah_produk",
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            placeholder="Jumlah Produk..."
+                                                        />
+                                                        <InputError
+                                                            message={
+                                                                errors.jumlah_produk
+                                                            }
+                                                            className="mt-2"
                                                         />
                                                     </div>
                                                     <div className="mb-4">
-                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
-                                                            Jumlah Produk
-                                                        </label>
-                                                        <input
-                                                            type="number" id="Nama Produk" className="input input-bordered w-full" placeholder="Jumlah Produk..."
+                                                        <InputLabel
+                                                            htmlFor="total_transaksi"
+                                                            value="Total Transaksi"
+                                                        />
+                                                        <TextInput
+                                                            id="total_transaksi"
+                                                            type="text"
+                                                            name="total transaksi"
+                                                            value={
+                                                                data.total_transaksi
+                                                            }
+                                                            className="file-input file-input-outline input-bordered w-full max-w-xs"
+                                                            onChange={(e) =>
+                                                                setData(
+                                                                    "total_transaksi",
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            placeholder="Total Transaksi..."
+                                                        />
+                                                        <InputError
+                                                            message={
+                                                                errors.total_transaksi
+                                                            }
+                                                            className="mt-2"
                                                         />
                                                     </div>
                                                     <div className="mb-4">
-                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
-                                                            Harga Produk
-                                                        </label>
-                                                        <input
-                                                            type="text" id="Nama Produk" className="input input-bordered w-full" placeholder="Harga Produk..."
+                                                        <InputLabel
+                                                            htmlFor="tanggal_transaksi"
+                                                            value="Tanggal Transaksi"
+                                                        />
+                                                        <TextInput
+                                                            id="tanggal_transaksi"
+                                                            type="date"
+                                                            name="tanggal transaksi"
+                                                            value={
+                                                                data.tanggal_transaksi
+                                                            }
+                                                            className="file-input file-input-outline input-bordered w-full max-w-xs"
+                                                            onChange={(e) =>
+                                                                setData(
+                                                                    "tanggal_transaksi",
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            placeholder="Tanggal Transaksi..."
+                                                        />
+                                                        <InputError
+                                                            message={
+                                                                errors.tanggal_transaksi
+                                                            }
+                                                            className="mt-2"
                                                         />
                                                     </div>
                                                     <div className="flex justify-end">
-                                                        <button type="button" className="btn btn-outline mr-2" onClick={closeModal}>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-outline mr-2"
+                                                            onClick={closeModal}
+                                                        >
                                                             Cancel
                                                         </button>
-                                                        <button type="submit" className="btn btn-success text-white">
+                                                        <button
+                                                            type="submit"
+                                                            className="btn btn-success text-white"
+                                                        >
                                                             Save
                                                         </button>
                                                     </div>
@@ -87,150 +283,278 @@ export default function Transaksi({ auth }) {
                                             </div>
                                         </div>
                                     )}
-
-
                                 </div>
                                 <div className="overflow-x-auto">
                                     <table className="table w-full">
                                         <thead>
                                             <tr align="center">
                                                 <th>ID Transaksi</th>
-                                                <th>ID Produk</th>
-                                                <th>ID Kategori</th>
+                                                <th>Nama Produk</th>
                                                 <th>Jumlah Produk</th>
                                                 <th>Harga Produk</th>
                                                 <th>Tanggal Transaksi</th>
-                                                <th >Aksi</th>
+                                                <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody align="center">
-                                            {/* Produk 1*/}
-                                            <tr>
-                                                <td>1</td>
-                                                <td>4</td>
-                                                <td>2</td>
-                                                <td align="center">5</td>
-                                                <td>Rp. 319.000</td>
-                                                <td>08/07/2024</td>
-                                                <td>
-                                                    <button className="btn btn-square btn-ghost" onClick={openModalEdit}>
-                                                        <PencilIcon className="h-6 w-6 text-gray-500" />
-                                                    </button>
-                                                    {/* Modal untuk Form */}
-                                                    {isModalEditOpen && (
-                                                        <div className="modal modal-open">
-                                                            <div className="modal-box relative">
-                                                                <button
-                                                                    className="btn btn-sm btn-circle absolute right-2 top-2"
-                                                                    onClick={closeModalEdit}
-                                                                >
-                                                                    ✕
-                                                                </button>
-                                                                <form align="left">
-                                                                    <h2 className="text-2xl font-bold">Edit Transaksi Selva House</h2>
-                                                                    <div className="mb-4">
-                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
-                                                                            ID Produk
-                                                                        </label>
-                                                                        <input
-                                                                            type="text" id="Nama Produk" className="input input-bordered w-full" value="4"
-                                                                        />
+                                            {transaksis.data.map(
+                                                (transaksi) => (
+                                                    <tr>
+                                                        <td>
+                                                            {
+                                                                transaksi.id_transaksi
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                transaksi.namaBy
+                                                                    .nama_produk
+                                                            }
+                                                        </td>
+                                                        <td align="center">
+                                                            {
+                                                                transaksi.jumlah_produk
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            Rp.{" "}
+                                                            {
+                                                                transaksi
+                                                                    .hargaBy
+                                                                    .harga_produk
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                transaksi.tanggal_transaksi
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <button
+                                                                className="btn btn-square btn-ghost"
+                                                                onClick={() =>
+                                                                    editData(
+                                                                        transaksi
+                                                                    )
+                                                                }
+                                                            >
+                                                                <PencilIcon className="h-6 w-6 text-gray-500" />
+                                                            </button>
+                                                            {/* Modal untuk Form */}
+                                                            {isModalEditOpen && (
+                                                                <div className="modal modal-open">
+                                                                    <div className="modal-box relative">
+                                                                        <Link
+                                                                            href={route(
+                                                                                "Transaksi.index"
+                                                                            )}
+                                                                        >
+                                                                            <button
+                                                                                className="btn btn-sm btn-circle absolute right-2 top-2"
+                                                                                onClick={
+                                                                                    closeModalEdit
+                                                                                }
+                                                                            >
+                                                                                ✕
+                                                                            </button>
+                                                                        </Link>
+                                                                        <form
+                                                                            onSubmit={
+                                                                                submitUpdate
+                                                                            }
+                                                                        >
+                                                                            <h2 className="text-2xl font-bold">
+                                                                                Edit
+                                                                                Transaksi
+                                                                                Selva
+                                                                                House
+                                                                            </h2>
+                                                                            <div className="mb-4">
+                                                                                <InputLabel
+                                                                                    htmlFor="id_produk"
+                                                                                    value="Id Produk"
+                                                                                />
+                                                                                <SelectInput
+                                                                                    id="id_produk"
+                                                                                    name="id produk"
+                                                                                    className="select select-bordered w-full max-w-xs"
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) =>
+                                                                                        setData(
+                                                                                            "id_produk",
+                                                                                            e
+                                                                                                .target
+                                                                                                .value
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    <option
+                                                                                        value={
+                                                                                            data.id_produk
+                                                                                        }
+                                                                                    >
+                                                                                        {
+                                                                                            data.id_produk
+                                                                                        }
+                                                                                    </option>
+                                                                                    {produks.data.map(
+                                                                                        (
+                                                                                            produk
+                                                                                        ) => (
+                                                                                            <option
+                                                                                                value={
+                                                                                                    produk.id_produk
+                                                                                                }
+                                                                                            >
+                                                                                                {
+                                                                                                    produk.nama_produk
+                                                                                                }
+                                                                                            </option>
+                                                                                        )
+                                                                                    )}
+                                                                                </SelectInput>
+                                                                                <InputError
+                                                                                    message={
+                                                                                        errors.nama_produk
+                                                                                    }
+                                                                                    className="mt-2"
+                                                                                />
+                                                                            </div>
+                                                                            <div className="mb-4">
+                                                                                <InputLabel
+                                                                                    htmlFor="jumlah_produk"
+                                                                                    value="Jumlah Produk"
+                                                                                />
+                                                                                <TextInput
+                                                                                    id="jumlah_produk"
+                                                                                    type="text"
+                                                                                    name="jumlah produk"
+                                                                                    value={
+                                                                                        data.jumlah_produk
+                                                                                    }
+                                                                                    className="file-input file-input-outline input-bordered w-full max-w-xs"
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) =>
+                                                                                        setData(
+                                                                                            "jumlah_produk",
+                                                                                            e
+                                                                                                .target
+                                                                                                .value
+                                                                                        )
+                                                                                    }
+                                                                                    placeholder="Jumlah Produk..."
+                                                                                />
+                                                                                <InputError
+                                                                                    message={
+                                                                                        errors.jumlah_produk
+                                                                                    }
+                                                                                    className="mt-2"
+                                                                                />
+                                                                            </div>
+                                                                            <div className="mb-4">
+                                                                                <InputLabel
+                                                                                    htmlFor="total_transaksi"
+                                                                                    value="Total Transaksi"
+                                                                                />
+                                                                                <TextInput
+                                                                                    id="total_transaksi"
+                                                                                    type="text"
+                                                                                    name="total transaksi"
+                                                                                    value={
+                                                                                        data.total_transaksi
+                                                                                    }
+                                                                                    className="file-input file-input-outline input-bordered w-full max-w-xs"
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) =>
+                                                                                        setData(
+                                                                                            "total_transaksi",
+                                                                                            e
+                                                                                                .target
+                                                                                                .value
+                                                                                        )
+                                                                                    }
+                                                                                    placeholder="Total Transaksi..."
+                                                                                />
+                                                                                <InputError
+                                                                                    message={
+                                                                                        errors.total_transaksi
+                                                                                    }
+                                                                                    className="mt-2"
+                                                                                />
+                                                                            </div>
+                                                                            <div className="mb-4">
+                                                                                <InputLabel
+                                                                                    htmlFor="tanggal_transaksi"
+                                                                                    value="Tanggal Transaksi"
+                                                                                />
+                                                                                <TextInput
+                                                                                    id="tanggal_transaksi"
+                                                                                    type="date"
+                                                                                    name="tanggal transaksi"
+                                                                                    value={
+                                                                                        data.tanggal_transaksi
+                                                                                    }
+                                                                                    className="file-input file-input-outline input-bordered w-full max-w-xs"
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) =>
+                                                                                        setData(
+                                                                                            "tanggal_transaksi",
+                                                                                            e
+                                                                                                .target
+                                                                                                .value
+                                                                                        )
+                                                                                    }
+                                                                                    placeholder="Tanggal Transaksi..."
+                                                                                />
+                                                                                <InputError
+                                                                                    message={
+                                                                                        errors.tanggal_transaksi
+                                                                                    }
+                                                                                    className="mt-2"
+                                                                                />
+                                                                            </div>
+                                                                            <div className="flex justify-end">
+                                                                                <Link
+                                                                                    href={route(
+                                                                                        "Transaksi.index"
+                                                                                    )}
+                                                                                >
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        className="btn btn-outline mr-2"
+                                                                                    >
+                                                                                        Cancel
+                                                                                    </button>
+                                                                                </Link>
+                                                                                <button
+                                                                                    type="submit"
+                                                                                    className="btn btn-success text-white"
+                                                                                >
+                                                                                    Save
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
                                                                     </div>
-                                                                    <div className="mb-4">
-                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
-                                                                            ID Kategori
-                                                                        </label>
-                                                                        <input
-                                                                            type="text" id="Jenis Produk" className="input input-bordered w-full" value="2"
-                                                                        />
-                                                                    </div>
-                                                                    <div className="mb-4">
-                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
-                                                                            Jumlah Produk
-                                                                        </label>
-                                                                        <input
-                                                                            type="number" id="Nama Produk" className="input input-bordered w-full" value="5"
-                                                                        />
-                                                                    </div>
-                                                                    <div className="mb-4">
-                                                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
-                                                                            Harga Produk
-                                                                        </label>
-                                                                        <input
-                                                                            type="text" id="Nama Produk" className="input input-bordered w-full" value="Rp. 319.000"
-                                                                        />
-                                                                    </div>
-                                                                    <div className="flex justify-end">
-                                                                        <button type="button" className="btn btn-outline mr-2" onClick={closeModalEdit}>
-                                                                            Cancel
-                                                                        </button>
-                                                                        <button type="submit" className="btn btn-success text-white">
-                                                                            Save
-                                                                        </button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                    <button className="btn btn-square btn-ghost">
-                                                        <TrashIcon className="h-6 w-6 text-red-500" />
-                                                    </button>
-                                                </td>
-                                            </tr>
-
-                                            {/* Produk 2*/}
-                                            <tr>
-                                                <td>2</td>
-                                                <td>4</td>
-                                                <td>2</td>
-                                                <td align="center">5</td>
-                                                <td>Rp. 319.000</td>
-                                                <td>08/07/2024</td>
-                                                <td>
-                                                    <button className="btn btn-square btn-ghost">
-                                                        <PencilIcon className="h-6 w-6 text-gray-500" />
-                                                    </button>
-                                                    <button className="btn btn-square btn-ghost">
-                                                        <TrashIcon className="h-6 w-6 text-red-500" />
-                                                    </button>
-                                                </td>
-                                            </tr>
-
-                                            {/* Produk 3*/}
-                                            <tr>
-                                                <td>3</td>
-                                                <td>4</td>
-                                                <td>2</td>
-                                                <td align="center">5</td>
-                                                <td>Rp. 319.000</td>
-                                                <td>08/07/2024</td>
-                                                <td>
-                                                    <button className="btn btn-square btn-ghost">
-                                                        <PencilIcon className="h-6 w-6 text-gray-500" />
-                                                    </button>
-                                                    <button className="btn btn-square btn-ghost">
-                                                        <TrashIcon className="h-6 w-6 text-red-500" />
-                                                    </button>
-                                                </td>
-                                            </tr>
-
-                                            {/* Produk 4*/}
-                                            <tr>
-                                                <td>4</td>
-                                                <td>4</td>
-                                                <td>2</td>
-                                                <td align="center">5</td>
-                                                <td>Rp. 319.000</td>
-                                                <td>08/07/2024</td>
-                                                <td>
-                                                    <button className="btn btn-square btn-ghost">
-                                                        <PencilIcon className="h-6 w-6 text-gray-500" />
-                                                    </button>
-                                                    <button className="btn btn-square btn-ghost">
-                                                        <TrashIcon className="h-6 w-6 text-red-500" />
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                                </div>
+                                                            )}
+                                                            <button
+                                                                className="btn btn-square btn-ghost"
+                                                                onClick={() =>
+                                                                    deleteData(
+                                                                        transaksi
+                                                                    )
+                                                                }
+                                                            >
+                                                                <TrashIcon className="h-6 w-6 text-red-500" />
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )}
                                         </tbody>
                                     </table>
                                 </div>
@@ -239,6 +563,6 @@ export default function Transaksi({ auth }) {
                     </div>
                 </div>
             </div>
-        </Layout >
+        </Layout>
     );
 }

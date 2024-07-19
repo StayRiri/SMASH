@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Http\Requests\StoreKategoriRequest;
 use App\Http\Requests\UpdateKategoriRequest;
+use App\Http\Resources\KategoriResource;
 use Inertia\Inertia;
 
 class KategoriController extends Controller
@@ -14,7 +15,12 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Kategori');
+        $query = Kategori::query();
+        $kategoris = $query->paginate(10);
+        return Inertia::render('Admin/Kategori', [
+            "kategoris" => KategoriResource::collection($kategoris),
+            "bawaData" => false,
+        ]);
     }
 
     /**
@@ -30,7 +36,9 @@ class KategoriController extends Controller
      */
     public function store(StoreKategoriRequest $request)
     {
-        //
+        $data = $request->validated();
+        Kategori::create($data);
+        return to_route('Kategori.index');
     }
 
     /**
@@ -44,9 +52,16 @@ class KategoriController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kategori $kategori)
+    public function edit($kategoriEdit)
     {
-        //
+        $query = Kategori::query();
+        $kategoris = $query->paginate(10);
+        $dataEdit = Kategori::where('id_kategori', $kategoriEdit)->first();
+        return Inertia::render('Admin/Kategori', [
+            "kategoris" => KategoriResource::collection($kategoris),
+            "kategoriEdit" => new KategoriResource($dataEdit),
+            "bawaData" => true,
+        ]);
     }
 
     /**
@@ -54,7 +69,10 @@ class KategoriController extends Controller
      */
     public function update(UpdateKategoriRequest $request, Kategori $kategori)
     {
-        //
+        $data = $request->validated();
+        $data['id_kategori'] = $kategori->id_kategori;
+        $kategori->where('id_kategori', $kategori->id_kategori)->update($data);
+        return to_route('Kategori.index');
     }
 
     /**
@@ -62,6 +80,8 @@ class KategoriController extends Controller
      */
     public function destroy(Kategori $kategori)
     {
-        //
+        $kategori->where('id_kategori', $kategori->id_kategori)->delete();
+        return to_route('Kategori.index')
+            ->with('success', "Kategori berhasil dihapus");
     }
 }

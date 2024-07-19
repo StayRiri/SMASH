@@ -14,6 +14,13 @@ class TransaksiResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id_transaksi' => $this->id_transaksi,
+            'namaBy' => new ProdukResource($this->produkBy),
+            'jumlah_produk' => $this->jumlah_produk,
+            'hargaBy' => new ProdukResource($this->produkBy),
+            'total_transaksi' => $this->total_transaksi,
+            'tanggal_transaksi' => $this->tanggal_transaksi,
+        ];
     }
 }
