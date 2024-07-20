@@ -107,7 +107,7 @@ export default function Transaksi({
 
     return (
         <Layout user={auth.user}>
-            <Head title="Produk" />
+            <Head title="Transaksi" />
 
             <div className="flex w-full">
                 <div className="container mx-auto p-4">

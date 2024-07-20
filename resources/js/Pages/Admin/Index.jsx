@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Layout from "@/Layouts/Layout";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
+import { data } from "autoprefixer";
 
 export default function Dashboard({ auth, produks, kategoris }) {
     const [searchNama, setSearchNama] = useState("");
@@ -25,6 +26,11 @@ export default function Dashboard({ auth, produks, kategoris }) {
             .includes(searchKategori.toLowerCase());
         return matchNama && matchKategori;
     });
+
+    const DetailProduk = (dataDetail) => {
+        console.log(dataDetail);
+        router.get(route("Produk.show", { produk: dataDetail.id_produk }));
+    };
 
     return (
         <Layout user={auth.user}>
@@ -87,7 +93,10 @@ export default function Dashboard({ auth, produks, kategoris }) {
                                         {produk.nama_produk}
                                     </h2>
                                     <div className="card-actions">
-                                        <button className="btn btn-warning w-24">
+                                        <button
+                                            className="btn btn-warning w-24"
+                                            onClick={() => DetailProduk(produk)}
+                                        >
                                             Detail
                                         </button>
                                     </div>

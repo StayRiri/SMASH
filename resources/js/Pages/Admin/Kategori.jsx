@@ -75,7 +75,7 @@ export default function Kategori({ auth, kategoris, kategoriEdit, bawaData }) {
 
     return (
         <Layout user={auth.user}>
-            <Head title="Produk" />
+            <Head title="Kategori" />
 
             <div className="flex w-full">
                 <div className="container mx-auto p-4">

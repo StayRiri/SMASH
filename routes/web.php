@@ -25,13 +25,7 @@ Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
 
-// Route::get('/customer', function () {
-//     Route::get('/dashboard', [CustomerController::class, 'index'])->name('dashboard');
-// });
-
 Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('dashboardcustomer');
-
-
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
@@ -44,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // CRUD PRODUK
 Route::middleware('auth')->group(function () {
+    Route::get('/Produk/{produk}', [ProdukController::class, 'show'])->name('Produk.show');
     Route::get('/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('Produk.edit');
     Route::put('produk/{produk}', [ProdukController::class, 'update'])->name('Produk.update');
     Route::delete('/produk/{produk}', [ProdukController::class, 'destroy'])->name('Produk.destroy');
@@ -63,13 +58,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/transaksi/{transaksi}', [TransaksiController::class, 'destroy'])->name('Transaksi.destroy');
 });
 
+require __DIR__ . '/auth.php';
+
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
-
-require __DIR__ . '/auth.php';
 
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Admin/Index');   
