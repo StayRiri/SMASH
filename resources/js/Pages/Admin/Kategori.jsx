@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 import InputError from "@/Components/InputError";
+import Pagination from "@/Components/Pagination";
 
 export default function Kategori({ auth, kategoris, kategoriEdit, bawaData }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -285,6 +286,7 @@ export default function Kategori({ auth, kategoris, kategoriEdit, bawaData }) {
                                             {/* Produk 1*/}
                                         </tbody>
                                     </table>
+                                    <Pagination links={kategoris.meta.links} />
                                 </div>
                             </div>
                         </div>

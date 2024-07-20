@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use App\Http\Resources\KategoriResource;
 use App\Http\Resources\ProdukResource;
 use App\Models\Produk;
+use App\Models\Kategori;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -17,9 +19,12 @@ class AdminController extends Controller
     public function index()
     {
         $query = Produk::query();
-        $produks = $query->paginate(10);
+        $produks = $query->paginate(500);
+        $query2 = Kategori::query();
+        $kategoris = $query2->paginate(500);
         return Inertia::render('Admin/Index', [
             "produks" => ProdukResource::collection($produks),
+            "kategoris" => KategoriResource::collection(($kategoris)),
         ]);
     }
 

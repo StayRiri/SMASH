@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\TransaksiController;
 use App\Models\Produk;
 use Illuminate\Foundation\Application;
@@ -38,7 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('Produk', ProdukController::class);
     Route::resource('Kategori', KategoriController::class);
     Route::resource('Transaksi', TransaksiController::class);
-    Route::resource('Riwayat', TransaksiController::class);
+    Route::resource('Riwayat', RiwayatController::class);
 });
 
 // CRUD PRODUK

@@ -7,6 +7,7 @@ import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 import InputError from "@/Components/InputError";
 import { comma } from "postcss/lib/list";
+import Pagination from "@/Components/Pagination";
 
 export default function Produk({
     auth,
@@ -724,6 +725,7 @@ export default function Produk({
                                             ))}
                                         </tbody>
                                     </table>
+                                    <Pagination links={produks.meta.links} />
                                 </div>
                             </div>
                         </div>

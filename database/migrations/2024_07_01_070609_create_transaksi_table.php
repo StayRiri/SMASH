@@ -15,11 +15,7 @@ return new class extends Migration
             $table->id('id_transaksi');
             $table->unsignedBigInteger('id_produk');
             $table->foreign('id_produk')->references('id_produk')->on('produk');
-            $table->unsignedBigInteger('id_kategori');
-            $table->foreign('id_kategori')->references('id_kategori')->on('kategori');
-            $table->integer('nama_produk');
             $table->integer('jumlah_produk');
-            $table->integer('harga_produk');
             $table->integer('total_transaksi');
             $table->date('tanggal_transaksi');
         });

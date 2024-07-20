@@ -10,9 +10,7 @@ export default function Layout({ user, children }) {
     };
 
     return (
-        <div className="flex">
-            <div className="h-screen"></div>
-            {/* Navbar samping */}
+        <div className="min-h-screen flex">
             <nav
                 className={`bg-orange-400 w-50 p-4 text-white ${
                     isOpen ? "block" : "hidden"
@@ -56,6 +54,14 @@ export default function Layout({ user, children }) {
                         active={route().current("Transaksi.index")}
                     >
                         Transaksi
+                    </NavLink>
+                    <br />
+                    <NavLink
+                        className="my-4"
+                        href={route("Riwayat.index")}
+                        active={route().current("Riwayat.index")}
+                    >
+                        Riwayat Transaksi
                     </NavLink>
                 </ul>
             </nav>

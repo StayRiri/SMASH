@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 import InputError from "@/Components/InputError";
+import Pagination from "@/Components/Pagination";
 
 export default function Transaksi({
     auth,
@@ -292,6 +293,7 @@ export default function Transaksi({
                                                 <th>Nama Produk</th>
                                                 <th>Jumlah Produk</th>
                                                 <th>Harga Produk</th>
+                                                <th>Total Transaksi</th>
                                                 <th>Tanggal Transaksi</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -322,6 +324,12 @@ export default function Transaksi({
                                                                 transaksi
                                                                     .hargaBy
                                                                     .harga_produk
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            Rp.{" "}
+                                                            {
+                                                                transaksi.total_transaksi
                                                             }
                                                         </td>
                                                         <td>
@@ -557,6 +565,7 @@ export default function Transaksi({
                                             )}
                                         </tbody>
                                     </table>
+                                    <Pagination links={transaksis.meta.links} />
                                 </div>
                             </div>
                         </div>
