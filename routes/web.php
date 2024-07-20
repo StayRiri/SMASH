@@ -11,6 +11,7 @@ use App\Models\Produk;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -25,7 +26,11 @@ Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
 
-Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('dashboardcustomer');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
+
+Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('dashboardcustomer')->withoutMiddleware('auth');
+Route::get('/customer/detail/produk/{produk}', [CustomerController::class, 'show'])->name('Customer.show')->withoutMiddleware('auth');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');

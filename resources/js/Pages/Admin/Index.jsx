@@ -28,7 +28,6 @@ export default function Dashboard({ auth, produks, kategoris }) {
     });
 
     const DetailProduk = (dataDetail) => {
-        console.log(dataDetail);
         router.get(route("Produk.show", { produk: dataDetail.id_produk }));
     };
 

@@ -1,6 +1,6 @@
 import CustomerLayout from "@/Layouts/CustomerLayout";
 import { useState } from "react";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 
@@ -25,12 +25,15 @@ export default function DashboardCustomer({ produks, kategoris }) {
             .includes(searchKategori.toLowerCase());
         return matchNama && matchKategori;
     });
+
+    const DetailProduk = (dataDetail) => {
+        router.get(route("Customer.show", { produk: dataDetail.id_produk }));
+    };
     return (
         <CustomerLayout>
             <Head title="Dashboard Customer" />
 
             <div className="flex flex-wrap items-center w-full">
-                
                 <div className="max-w-10xl mx-auto mt-4">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="flex flex-col items-center w-full">
@@ -87,7 +90,10 @@ export default function DashboardCustomer({ produks, kategoris }) {
                                         {produk.nama_produk}
                                     </h2>
                                     <div className="card-actions">
-                                        <button className="btn btn-warning w-24">
+                                        <button
+                                            className="btn btn-warning w-24"
+                                            onClick={() => DetailProduk(produk)}
+                                        >
                                             Detail
                                         </button>
                                     </div>

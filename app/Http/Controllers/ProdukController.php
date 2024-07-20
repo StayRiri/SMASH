@@ -64,7 +64,9 @@ class ProdukController extends Controller
     public function show($produkDetail)
     {
         $produkDetail = Produk::where('id_produk', $produkDetail)->first();
-        return Inertia::render('Admin/DetailProduk');
+        return Inertia::render('Admin/DetailProduk', [
+            "produkDetail" => new ProdukResource(($produkDetail)),
+        ]);
     }
 
     /**

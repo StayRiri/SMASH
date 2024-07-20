@@ -22,4 +22,12 @@ class CustomerController extends Controller
             "kategoris" => KategoriResource::collection($kategoris),
         ]);
     }
+    
+    public function show($produkDetail)
+    {
+        $produkDetail = Produk::where('id_produk', $produkDetail)->first();
+        return Inertia::render('Customer/DetailProduk', [
+            "produkDetail" => new ProdukResource(($produkDetail)),
+        ]);
+    }
 }

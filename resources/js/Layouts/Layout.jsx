@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import NavLink from "@/Components/NavLink";
 
 export default function Layout({ user, children }) {
@@ -62,6 +62,14 @@ export default function Layout({ user, children }) {
                         active={route().current("Riwayat.index")}
                     >
                         Riwayat Transaksi
+                    </NavLink>
+                    <br />
+                    <NavLink
+                        className="my-4"
+                        href={route("logout")}
+                        method="post"
+                    >
+                        Log Out
                     </NavLink>
                 </ul>
             </nav>
